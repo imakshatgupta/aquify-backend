@@ -1,98 +1,68 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const businessSchema=new mongoose.Schema({
-    ownerName:{
-        type:String,
-        default:"saurav sable"
-    },
-    ownerId:{
-        type:String,
-        default:"6558bba9db814920bab1592c"
-    },
-    ownerEmail:{
-        type:String,
-        default:"Admin@gmail.com"
-    },
-    ownerImage:{
-        type:String,
-        default:"https://res.cloudinary.com/dlnkiwqfa/image/upload/v1700890727/gdigsqfldk4vliwgzfhm.svg"
-    },
-    link:{
-        type:String
-    },
-    category:{
-        type:String
-    },
-    businessName:{
-        type:String
-    },
-    startDate:{
-        type:Date
-    },
-    location:{
-        type:String
-    },
-    projectName:{
-        type:String
-    },
-    otherCategories:{
-        type:Array
-    },
-    tagLine:{
-        type:String
-    },
-    logoImage:{
-        type:String
-    },
-    listingImage:{
-        type:String
-    },
-    description:{
-        type:String
-    },
-    monthlyProfit:{
-        type:Number
-    },
-    monthlyRevenue:{
-        type:Number
-    },
-    documentProof:{
-        type:String
-    },
-    InstagramHandle:{
-        type:String
-    },
-    InstagramHandleFollowers:{
-        type:Number
-    },
-    TwitterHandle:{
-        type:String
-    },
-    TwitterHandleFollowers:{
-        type:Number
-    },
-    FacebookHandle:{
-        type:String
-    },
-    FacebookHandleFollowers:{
-        type:Number
-    },
-    YoutubeHandle:{
-        type:String
-    },
-    YoutubeHandleFollowers:{
-        type:Number
-    },
-    maxPrice:{
-        type:Number
-    },
-    minPrice:{
-        type:Number
-    },
-    offerReceived:{
-        type:String,
-        default:"no"
-    }
+const businessSchema = new mongoose.Schema({
+  ownerName: {
+    type: String,
+  },
+  ownerId: {
+    type: String,
+  },
+  ownerEmail: {
+    type: String,
+  },
+  ownerImage: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/dlnkiwqfa/image/upload/v1700890727/gdigsqfldk4vliwgzfhm.svg",
+  },
+  link: String,
+  category: String,
+  businessName: {
+    type: String,
+    unique: true,
+  },
+  startDate: String,
+  location: String,
+  projectName: String,
+  competitors: String,
+  tagline: String,
+  logoImage: String,
+  listingImage: String,
+  description: String,
+  businessModel: String,
+  growthOpportunity: String,
+  projectBackground: String,
+  sellingReasoning: String,
+  techStack: String,
+  askingPrice: String,
+  multiplies: String,
+  ttmRevenue: String,
+  ttmProfit: String,
+  monthlyProfit: String,
+  monthlyRevenue: String,
+  lastMonthRevenue: String,
+  lastMonthProfit: String,
+  ttmGrossRevenue: String,
+  ttmNetProfit: String,
+  financing: String,
+  teamSize: String,
+  lastMonthGrossRevenue: String,
+  lastMonthNetProfit: String,
+  customers: String,
+  annualRecurringRevenue: String,
+  annualGrowthRate: String,
+  valuation: String,
+  documentProof: String,
+  InstagramHandle: String,
+  InstagramHandleFollowers: String,
+  TwitterHandle: String,
+  TwitterHandleFollowers: String,
+  FacebookHandle: String,
+  FacebookHandleFollowers: String,
+  YoutubeHandle: String,
+  YoutubeHandleFollowers: String,
+  maxPrice: String,
+  minPrice: String,
 });
 
-module.exports = new mongoose.model('businessDatas',businessSchema);
+module.exports = new mongoose.model("businessDatas", businessSchema);

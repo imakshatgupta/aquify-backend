@@ -1,3 +1,4 @@
+const { response } = require("express");
 const User = require("../models/userModel.js");
 const router = require("express").Router();
 const passport = require("../passport");
@@ -37,14 +38,17 @@ router.get("/success", async (req, res) => {
         let password = generatePin();
         let saveuser = new User({ userName: req.session.user.displayName, email: email, password: password, role: role });
         let response = await saveuser.save();
-        console.log("response /success", response);
+        data = response;
     }
     res.clearCookie('user');
-    const payload = { id: data._id };
-    const expiresInDuration = '1d';
-    const token=jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: expiresInDuration });
-    res.cookie('token', (token, { expiresIn: expiresInDuration }));
+    const token=jwt.sign({ id: data._id }, process.env.SECRET_KEY);
+    res.cookie('token', token, {
+        maxAge: 24 * 60 * 60 * 1000, 
+        httpOnly: false, 
+        secure: true,
+        sameSite: 'strict' 
+      });
     return res.redirect("/");
 });
-
 module.exports = router;
+    

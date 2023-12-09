@@ -30,6 +30,7 @@ const loginUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   const { userName, email, password} = req.body.formData;
+  const {role}=req.body;
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -41,6 +42,7 @@ const registerUser = async (req, res) => {
     
       if (user) {
         const token= generateToken(user);
+        console.log(token);
         res.cookie('token',token);
         res.status(201).json({
           _id: user._id,
@@ -56,11 +58,10 @@ const registerUser = async (req, res) => {
 
 const getUser = async (req, res) => {
     try {
-      const token=req.cookies.token;
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      
-      if (decoded && decoded.id) {
-        const user = await User.findById(decoded.id).select('-password -_id');
+      const  id  = req.headers['x-auth-token'];
+            
+      if (id) {
+        const user = await User.findById(id).select('-password -_id');
         
         if (user) {
           res.status(200).send({ user });
@@ -124,47 +125,22 @@ const updatePassword = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const { firstName, lastName, userName, about, role } = req.body;
-    const _id = req.user._id;
-    const user = await User.findById({ _id });
-
-    if (!user) {
-      return res.status(404).send('User not found.');
+    const  userId  = req.user._id;
+    if (userId) {
+        const body = req.body.formData;
+        const updateResult = await User.updateOne({ _id: userId }, body);
+        if (updateResult.modifiedCount > 0) {
+            return res.status(200).send({ msg: "Record Updated...!" });
+        } else {
+            return res.status(404).send({ error: "No matching record found or no changes made." });
+        }
+    } else {
+        return res.status(401).send({ error: "User Not Found...!" });
     }
-
-    const updateFields = {};
-    
-    if (firstName !== undefined && firstName !== '') {
-      updateFields.firstName = firstName;
-    }
-    if (lastName !== undefined && lastName !== '') {
-      updateFields.lastName = lastName;
-    }
-    if (userName !== undefined && userName !== '') {
-      updateFields.userName = userName;
-    }
-    if (about !== undefined && about !== '') {
-      updateFields.about = about;
-    }
-    if (role !== undefined && role !== '') {
-      updateFields.role = role;
-    }
-
-    const updatedUser = await User.findOneAndUpdate(
-      { _id },
-      { $set: updateFields },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      return res.status(404).send('User not found.');
-    }
-
-    res.send({ message: 'User data and profile picture saved successfully!' });
-  } catch (err) {
-    console.error('Error updating user profile: ', err);
-    res.status(500).send({ message: 'Internal Server Error' });
-  }
+} catch (error) {
+    console.error(error);
+    return res.status(500).send({ error });
+}
 };
 
 
