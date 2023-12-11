@@ -20,13 +20,14 @@ const addBusiness = async (req, res) => {
 
   const getBusiness = async (req, res) => {
     try {
-      const id = req.headers['x-auth-token'];
-      const business = await Business.find({ ownerId : id });
-      res.status(200).json({ business })
+      // Remove the ownerId condition to fetch all businesses
+      const business = await Business.find();
+      res.status(200).json({ business });
     } catch (error) {
-      console.error('Error getting business:', error);
+      console.error('Error getting businesses:', error);
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
+  
   
 module.exports={addBusiness , getBusiness};

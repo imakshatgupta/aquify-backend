@@ -127,7 +127,7 @@ const updateProfile = async (req, res) => {
   try {
     const  userId  = req.user._id;
     if (userId) {
-        const body = req.body.formData;
+        const body = req.body.form;
         const updateResult = await User.updateOne({ _id: userId }, body);
         if (updateResult.modifiedCount > 0) {
             return res.status(200).send({ msg: "Record Updated...!" });
