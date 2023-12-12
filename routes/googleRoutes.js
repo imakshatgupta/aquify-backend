@@ -48,7 +48,7 @@ router.get("/success", async (req, res) => {
         secure: true,
         sameSite: 'strict' 
       });
-    return res.redirect("/");
+    return res.redirect("http://localhost:3000/aqify#/MainDashboard/Dashbaord");
 });
 module.exports = router;
     
