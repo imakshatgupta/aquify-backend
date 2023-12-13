@@ -7,16 +7,16 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const mongoStore = require("connect-mongo");
 
-app.use(cors());
 
 const sessionStore = mongoStore.create({
-  mongoUrl: process.env.MONGO_URI,
-  collectionName: "session",
+    mongoUrl: process.env.MONGO_URI,
+    collectionName: "session",
 });
 
 const app = express();
 app.use(express.json());
 
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(
   session({
