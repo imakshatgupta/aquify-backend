@@ -4,7 +4,9 @@ const User = require("../models/userModel.js");
 const authMiddleware = async (req, res, next) => {
     try {
       const token=req.cookies.token;
+      console.log(token);
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
+      console.log(decoded);
       let user = await User.findById(decoded.id).select("-password");
       req.user = user;
       next();
