@@ -26,6 +26,11 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Headers', corsOptions.allowedHeaders.join(','));
+    next();
+});
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
