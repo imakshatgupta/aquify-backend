@@ -15,8 +15,8 @@ const sessionStore = mongoStore.create({
 const app = express();
 app.use(express.json());
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow requests from this origin
-  credentials: true, // Allow sending cookies from the client
+  origin: "http://localhost:3000", 
+  credentials: false, 
 };
 
 app.use(cors(corsOptions));
