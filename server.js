@@ -15,17 +15,9 @@ const sessionStore = mongoStore.create({
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
-const corsOptions = {
-    origin: [
-        'http://localhost:3000',
-        'https://localhost:3000',
-    ],
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Cookie', 'Authorization'],
-};
 
-app.use(cors(corsOptions));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
