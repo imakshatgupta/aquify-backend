@@ -48,6 +48,7 @@ router.get("/success", async (req, res) => {
         secure: true,
         sameSite: 'strict' 
       });
+      console.log("cookie set", res.cookie);
     return res.redirect("http://localhost:3000/aqify#/MainDashboard/Dashbaord");
 });
 module.exports = router;
