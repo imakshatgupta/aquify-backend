@@ -45,8 +45,7 @@ router.get("/success", async (req, res) => {
     res.cookie('token', token, {
         maxAge: 24 * 60 * 60 * 1000, 
         httpOnly: false, 
-        secure: true,
-        sameSite: 'strict' 
+        secure: false,
       });
     return res.redirect("http://localhost:3000/aqify#/MainDashboard/Dashbaord");
 });
