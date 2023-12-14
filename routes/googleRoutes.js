@@ -40,13 +40,13 @@ router.get("/success", async (req, res) => {
         let response = await saveuser.save();
         data = response;
     }
-    res.clearCookie('user');
+    res.clearCookie('token');
     const token=jwt.sign({ id: data._id }, process.env.SECRET_KEY);
     res.cookie('token', token, {
         maxAge: 24 * 60 * 60 * 1000, 
         httpOnly: false, 
         secure: true,
-        sameSite: 'strict' 
+        // sameSite: 'strict' 
       });
     return res.redirect("http://localhost:3000/aqify#/MainDashboard/Dashbaord");
 });
