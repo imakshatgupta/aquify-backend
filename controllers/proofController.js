@@ -1,51 +1,36 @@
 const Proof = require("../models/proofofFundModel.js");
-const  User = require ("../models/userModel.js");
-const  jwt = require('jsonwebtoken');
+const User = require("../models/userModel.js");
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const addProofOfFund = async (req, res) => {
-    try {
-      const token = req.cookies.token;
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      const user = await User.findById(decoded.id)
-      const {businessName,projectName,location,proofImage1,proofImage2 } = req.body;
-      
-      const existingProof = await Proof.findOne({
-        ownerId: user.id,
-        businessName: businessName,
-        projectName: projectName,
-        location: location
-      });
+  try {
+    const user = await User.findById(req.body.userId);
 
-      if (existingProof) {
-        existingProof.businessName = businessName;
-        existingProof.projectName = projectName;
-        existingProof.location = location;
-        existingProof.proofImage1 = proofImage1;
-        existingProof.proofImage2 = proofImage2;
+    // Check if proof of fund already exists for the user
+    const existingProof = await Proof.findOne({ ownerId: user._id });
 
-        await existingProof.save();
-        res.send({ message: 'Proof of fund data updated successfully!' });
-      } else {
+    if (existingProof) {
+      return res.send({ message: 'Proof of fund already added' });
+    }
 
-        const newProof = new Proof({
-          ownerName: user.username,
-          ownerId: user.id,
-          ownerEmail: user.userEmail,
-          businessName: businessName,
-          projectName: projectName,
-          location: location,
-          proofImage1: proofImage1,
-          proofImage2: proofImage2
-        });
+    const newProof = new Proof({
+      ownerName: user.userName,
+      ownerId: user._id,
+      ownerEmail: user.email,
+      businessName: req.body.formData.businessName,
+      projectName: req.body.formData.projectName,
+      location: req.body.formData.location,
+      document: req.body.formData.document,
+    });
 
-        await newProof.save();
-        res.send({ message: 'Proof of fund data saved successfully!' });
-      }
+    await newProof.save();
+    res.send({ message: 'Proof of fund data saved successfully!' });
+
   } catch (err) {
     console.error('Error uploading file and updating database: ', err);
     res.status(500).send({ message: 'Internal Server Error' });
   }
 };
 
-module.exports={addProofOfFund};
+module.exports = { addProofOfFund };

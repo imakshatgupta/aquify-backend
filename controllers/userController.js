@@ -1,4 +1,5 @@
 const  User = require ("../models/userModel.js");
+const Proof = require("../models/proofofFundModel.js");
 const  jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -62,9 +63,10 @@ const getUser = async (req, res) => {
             
       if (id) {
         const user = await User.findById(id).select('-password -_id');
-        
+        const status = await Proof.findOne({ ownerId: id })
+
         if (user) {
-          res.status(200).send({ user });
+          res.status(200).send({ user , status });
         } else {
           res.status(404).send({ message: 'User not found' });
         }

@@ -25,11 +25,7 @@ const proofofFundSchema = mongoose.Schema(
         type:String,
         required:true
     },
-    proofImage1:{
-        type:String,
-        required:true
-    },
-    proofImage2:{
+    document:{
         type:String,
         required:true
     },
