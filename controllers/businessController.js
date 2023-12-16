@@ -28,6 +28,17 @@ const addBusiness = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error' });
     }
   }
+
+  const getBusinessById = async (req, res) => {
+    try {
+      const ownerId = req.query.id;
+      const business = await Business.find({ownerId : ownerId});
+      res.status(200).json({ business });
+    } catch (error) {
+      console.error('Error getting businesses:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
   
   
-module.exports={addBusiness , getBusiness};
+module.exports={addBusiness , getBusiness , getBusinessById};

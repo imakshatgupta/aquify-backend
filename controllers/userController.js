@@ -2,6 +2,9 @@ const User = require("../models/userModel.js");
 const Proof = require("../models/proofofFundModel.js");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const stripe = require("stripe")(
+  "sk_test_51O4hY9SAFIUZ4HpWObRqBcH8pMoyVPbcCLpOzNuMKw5Rw4Yv4GZqh8ylqqHrUEkKWPheK1UK04B7A4I3uL6kGorK00soCEj7xH"
+);
 
 const generateToken = (user) => {
   const payload = { id: user._id };
@@ -145,6 +148,35 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const payment = async (req, res) => {
+  try {
+   const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "inr",
+            product_data: {
+              name: "Aquify",
+            },
+            unit_amount: 20000,
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: "http://localhost:3000/aqify#/MainDashboard/Dashbaord",
+      cancel_url: "http://localhost:3000/aqify#/MainDashboard/Dashbaord/error",
+    });
+    res.json({ url: session.url });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+}
+
 module.exports = {
   loginUser,
   registerUser,
@@ -152,4 +184,5 @@ module.exports = {
   updateProfile,
   getUser,
   checkUser,
+  payment,
 };
