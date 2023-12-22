@@ -1,5 +1,6 @@
 const User = require("../models/userModel.js");
 const Proof = require("../models/proofofFundModel.js");
+const Feedback = require("../models/feedback.js");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const stripe = require("stripe")(
@@ -177,6 +178,25 @@ const payment = async (req, res) => {
   }
 }
 
+const feedback = async(req , res) => {
+  try {
+
+console.log(req.body)
+console.log(req.body.feedback)
+
+const newFeed = new Feedback({
+  username: req.body.username,
+  feed: req.body.feedback
+})
+
+await newFeed.save();
+res.send({message: 'Feedback saved successfully!'})
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   loginUser,
   registerUser,
@@ -185,4 +205,5 @@ module.exports = {
   getUser,
   checkUser,
   payment,
+  feedback,
 };
