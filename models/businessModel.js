@@ -33,7 +33,10 @@ const businessSchema = new mongoose.Schema({
   growthOpportunity: String,
   projectBackground: String,
   sellingReasoning: String,
-  techStack: String,
+  techStack1: String,
+  techStack2: String,
+  techStack3: String,
+  techStack4: String,
   askingPrice: String,
   multiplies: String,
   ttmRevenue: String,
@@ -63,6 +66,11 @@ const businessSchema = new mongoose.Schema({
   YoutubeHandleFollowers: String,
   maxPrice: String,
   minPrice: String,
+  carouselImage1: String,
+  carouselImage2: String,
+  googleAnalytics: String,
+  video: String,
+
 });
 
 module.exports = new mongoose.model("businessDatas", businessSchema);

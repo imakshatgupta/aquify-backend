@@ -45,6 +45,7 @@ const businessRoutes = require("./routes/businessRoutes");
 const proofRoutes = require("./routes/proofofFundRoutes");
 const googleRoutes = require("./routes/googleRoutes");
 const chatRoutes = require("./routes/chatRoutes");
+const transferRoutes = require("./routes/transferRoutes.js");
 const { authMiddleware } = require("./middleware/authMiddleware");
 
 const PORT = process.env.PORT || 5000;
@@ -61,6 +62,7 @@ app.use("/business", businessRoutes);
 app.use("/proof", proofRoutes);
 app.use("/auth", googleRoutes);
 app.use("/chat", chatRoutes);
+app.use("/transfer", transferRoutes);
 
 const server = app.listen(PORT, () => {
   console.log("server started");
