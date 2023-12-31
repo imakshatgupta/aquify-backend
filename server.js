@@ -46,6 +46,7 @@ const proofRoutes = require("./routes/proofofFundRoutes");
 const googleRoutes = require("./routes/googleRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const transferRoutes = require("./routes/transferRoutes.js");
+const advisoryRoutes = require("./routes/advisoryRoutes.js");
 const { authMiddleware } = require("./middleware/authMiddleware");
 
 const PORT = process.env.PORT || 5000;
@@ -59,6 +60,7 @@ app.use("/users", userRoutes);
 app.use("/contact", contactRoutes);
 app.use("/template", templateRoutes);
 app.use("/business", businessRoutes);
+app.use("/advisory", advisoryRoutes);
 app.use("/proof", proofRoutes);
 app.use("/auth", googleRoutes);
 app.use("/chat", chatRoutes);
