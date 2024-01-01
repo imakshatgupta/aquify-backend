@@ -46,6 +46,7 @@ const proofRoutes = require("./routes/proofofFundRoutes");
 const googleRoutes = require("./routes/googleRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const transferRoutes = require("./routes/transferRoutes.js");
+const agoraRoutes = require("./routes/agoraRoutes.js");
 const { authMiddleware } = require("./middleware/authMiddleware");
 
 const PORT = process.env.PORT || 5000;
@@ -63,6 +64,7 @@ app.use("/proof", proofRoutes);
 app.use("/auth", googleRoutes);
 app.use("/chat", chatRoutes);
 app.use("/transfer", transferRoutes);
+app.use("/agora", agoraRoutes);
 
 const server = app.listen(PORT, () => {
   console.log("server started");
