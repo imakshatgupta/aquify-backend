@@ -15,9 +15,9 @@ const sessionStore = mongoStore.create({
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:3000",
+app.use(cors(
+  {
+    origin: `${process.env.FRONTEND_URL}`,
     credentials: true,
   })
 );
@@ -54,7 +54,7 @@ const PORT = process.env.PORT || 5000;
 dbConnect();
 
 app.get("/", async (req, res) => {
-  res.redirect("http://localhost:3000/aqify#/MainDashboard");
+  res.redirect(`${process.env.FRONTEND_URL}/aqify#/MainDashboard`);
 });
 
 app.use("/users", userRoutes);
