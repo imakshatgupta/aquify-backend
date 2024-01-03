@@ -47,6 +47,6 @@ router.get("/success", async (req, res) => {
         httpOnly: false,
         secure: false,
     });
-    return res.redirect(process.env.FRONTEND_URL + `/aqify#/MainDashboard/Dashbaord`);
+    return res.redirect(process.env.FRONTEND_URL + `/#/MainDashboard/Dashbaord`);
 });
 module.exports = router;
