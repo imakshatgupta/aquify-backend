@@ -112,4 +112,9 @@ const rejectRequest = async (req, res) => {
     res.status(200).json({ message: "Notification sent" });
 }
 
-module.exports = { getMeetingDetails, getAllMeetingsForUser, createMeeting, scheduleRequest, acceptRequest, rejectRequest };
+const getNotifications = async (req, res) => {
+    const notifications = await notificationModel.find({ user: req.user.id });
+    res.json({ status: 200, notifications: notifications });
+}
+
+module.exports = { getMeetingDetails, getAllMeetingsForUser, createMeeting, scheduleRequest, acceptRequest, rejectRequest, getNotifications };
