@@ -18,6 +18,9 @@ const agoraSchema = new mongoose.Schema({
         type: Date,
         default: Date.now(),
     },
+    channelActiveTime: {
+        type: Date,
+    },
 });
 
 module.exports = new mongoose.model("agoraChannels", agoraSchema);
