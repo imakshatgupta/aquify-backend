@@ -110,7 +110,7 @@ const updatePassword = async (req, res) => {
     }
 
     const isPasswordValid = await user.matchPassword(oldPassword);
-  
+
 
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid old password" });
@@ -151,7 +151,7 @@ const updateProfile = async (req, res) => {
 
 const payment = async (req, res) => {
   try {
-   const session = await stripe.checkout.sessions.create({
+    const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       line_items: [
@@ -166,8 +166,8 @@ const payment = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: "http://localhost:3000/aqify#/MainDashboard/Dashbaord",
-      cancel_url: "http://localhost:3000/aqify#/MainDashboard/Dashbaord/error",
+      success_url: process.env.FRONTEND_URL + `/aqify#/MainDashboard/Dashbaord`,
+      cancel_url: process.env.FRONTEND_URL + `/aqify#/MainDashboard/Dashbaord/error`,
     });
     res.json({ url: session.url });
   } catch (error) {
@@ -178,19 +178,19 @@ const payment = async (req, res) => {
   }
 }
 
-const feedback = async(req , res) => {
+const feedback = async (req, res) => {
   try {
 
-console.log(req.body)
-console.log(req.body.feedback)
+    console.log(req.body)
+    console.log(req.body.feedback)
 
-const newFeed = new Feedback({
-  username: req.body.username,
-  feed: req.body.feedback
-})
+    const newFeed = new Feedback({
+      username: req.body.username,
+      feed: req.body.feedback
+    })
 
-await newFeed.save();
-res.send({message: 'Feedback saved successfully!'})
+    await newFeed.save();
+    res.send({ message: 'Feedback saved successfully!' })
 
   } catch (error) {
     console.log(error)

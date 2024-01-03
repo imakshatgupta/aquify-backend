@@ -2,11 +2,11 @@ const { response } = require("express");
 const User = require("../models/userModel.js");
 const router = require("express").Router();
 const passport = require("../passport");
-const jwt = require("jsonwebtoken"); 
+const jwt = require("jsonwebtoken");
 
 
 function generatePin() {
-    const pinLength = 6; 
+    const pinLength = 6;
     let pin = '';
     for (let i = 0; i < pinLength; i++) {
         pin += Math.floor(Math.random() * 10);
@@ -41,13 +41,12 @@ router.get("/success", async (req, res) => {
         data = response;
     }
     res.clearCookie('token');
-    const token=jwt.sign({ id: data._id }, process.env.SECRET_KEY);
+    const token = jwt.sign({ id: data._id }, process.env.SECRET_KEY);
     res.cookie('token', token, {
-        maxAge: 24 * 60 * 60 * 1000, 
-        httpOnly: false, 
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: false,
         secure: false,
-      });
-    return res.redirect("http://localhost:3000/aqify#/MainDashboard/Dashbaord");
+    });
+    return res.redirect(process.env.FRONTEND_URL + `/aqify#/MainDashboard/Dashbaord`);
 });
 module.exports = router;
-    
