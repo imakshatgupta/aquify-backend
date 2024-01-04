@@ -9,6 +9,6 @@ router.post("/create", authMiddleware, createMeeting);
 router.post("/schedule", authMiddleware, scheduleRequest);
 router.post("/accept", authMiddleware, acceptRequest);
 router.post("/reject", authMiddleware, rejectRequest);
-router.get("/notifications", authMiddleware, getNotifications);
+router.get("/notifications", getNotifications);
 
 module.exports = router;

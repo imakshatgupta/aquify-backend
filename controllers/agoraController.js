@@ -49,9 +49,10 @@ const scheduleRequest = async (req, res) => {
         return res.status(404).json({ message: "User not found" });
     }
 
+
     const newNotification = await new notificationModel({
         user: user,
-        message: "You have a meeting request from " + userData.fName + " " + userData.lName + " for your listing" + listing + " at " + time + ".",
+        message: "You have a meeting request from " + userData.firstName + " " + userData.lastName + " for your listing " + listing + " at " + time + ".",
     });
 
     await newNotification.save();
@@ -113,7 +114,8 @@ const rejectRequest = async (req, res) => {
 }
 
 const getNotifications = async (req, res) => {
-    const notifications = await notificationModel.find({ user: req.user.id });
+    console.log(req.query.user);
+    const notifications = await notificationModel.find({ user: req.query.user });
     res.json({ status: 200, notifications: notifications });
 }
 
