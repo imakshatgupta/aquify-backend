@@ -43,15 +43,18 @@ const scheduleRequest = async (req, res) => {
     const user = req.body.user;
     const time = req.body.time;
     const listing = req.body.listing;
-
+    const buyerId = req.user.id;
     const userData = await User.findById(req.user.id);
+
     if (!userData) {
         return res.status(404).json({ message: "User not found" });
     }
 
-
     const newNotification = await new notificationModel({
         user: user,
+        buyerId: buyerId,
+        button: true,
+        time: time,
         message: "You have a meeting request from " + userData.firstName + " " + userData.lastName + " for your listing " + listing + " at " + time + ".",
     });
 
@@ -60,7 +63,7 @@ const scheduleRequest = async (req, res) => {
 }
 
 const acceptRequest = async (req, res) => {
-    const { channelName, otherId, time } = req.body;
+    const { channelName, otherId, notificationId , time } = req.body;
     const uid = req.user.id;
     const meeting = await agoraModel.findOne({ channelName: channelName })
     if (meeting) {
@@ -82,15 +85,15 @@ const acceptRequest = async (req, res) => {
 
         const notification1 = await new notificationModel({
             user: uid,
-            message: "Your meeting with " + user2.fName + " " + user2.lName + " has been scheduled for " + time + ".",
-            link: "https://acqify.co/#/call/" + channelName,
+            message: "Your meeting with " + user2.firstName + " " + user2.lastName + " has been scheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
         })
 
         const notification2 = await new notificationModel({
             user: otherId,
-            message: "Your meeting with " + user1.fName + " " + user1.lName + " has been scheduled for " + time + ".",
-            link: "https://acqify.co/#/call/" + channelName,
+            message: "Your meeting with " + user1.firstName + " " + user1.lastName + " has been scheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
         })
+
+        await notificationModel.findByIdAndDelete(notificationId);
 
         await notification1.save();
         await notification2.save();
@@ -100,13 +103,25 @@ const acceptRequest = async (req, res) => {
 }
 
 const rejectRequest = async (req, res) => {
-    const { userId, time } = req.body;
+    // const { userId, time } = req.body;
+    const notificationId = req.body.notificationId;
+    const buyerId = req.body.buyerId;
+
+    // console.log(userId);
+    // console.log(time);
 
     const userData = await User.findById(req.user.id);
 
+    // const notification = await new notificationModel({
+    //     user: userId,
+    //     message: userData.fName + " " + userData.lName + " is unavailable for the meeting you requested. The alternate propose time is: " + time + ".",
+    // });
+
+    await notificationModel.findByIdAndDelete(notificationId);
+
     const notification = await new notificationModel({
-        user: userId,
-        message: userData.fName + " " + userData.lName + " is unavailable for the meeting you requested. The alternate propose time is: " + time + ".",
+        user: buyerId,
+        message: userData.firstName + " " + userData.lastName + " is unavailable for the meeting you requested.",
     });
 
     await notification.save();

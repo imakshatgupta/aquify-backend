@@ -11,7 +11,17 @@ const notification = new mongoose.Schema({
     link: {
         type: String,
     },
+    buyerId: {
+        type: String,
+    },
     read: {
+        type: Boolean,
+        default: false,
+    },
+    time: {
+        type: String,
+    },
+    button: {
         type: Boolean,
         default: false,
     },

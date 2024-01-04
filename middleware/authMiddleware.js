@@ -3,7 +3,7 @@ const User = require("../models/userModel.js");
 
 const authMiddleware = async (req, res, next) => {
     try {
-      const bearerToken = req.body.headers['authorization'];
+      const bearerToken = req.headers['authorization']  || req.body.headers['authorization'];
       if(!bearerToken) {
         res.status(401);
         throw new Error("Not authorized bearer token failed");
