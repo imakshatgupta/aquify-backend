@@ -66,7 +66,24 @@ const acceptRequest = async (req, res) => {
     const { channelName, otherId, notificationId , time } = req.body;
     const uid = req.user.id;
     const meeting = await agoraModel.findOne({ channelName: channelName })
+    const user1 = await User.findById(uid);
+    const user2 = await User.findById(otherId);
+
     if (meeting) {
+        const notification1 = await new notificationModel({
+            user: uid,
+            message: "Your meeting with " + user2.firstName + " " + user2.lastName + " has been scheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
+        })
+
+        const notification2 = await new notificationModel({
+            user: otherId,
+            message: "Your meeting with " + user1.firstName + " " + user1.lastName + " has been scheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
+        })
+
+        await notificationModel.findByIdAndDelete(notificationId);
+
+        await notification1.save();
+        await notification2.save();
         return res.json({ meeting });
     }
     else {
@@ -80,8 +97,6 @@ const acceptRequest = async (req, res) => {
 
         await newMeeting.save();
 
-        const user1 = await User.findById(uid);
-        const user2 = await User.findById(otherId);
 
         const notification1 = await new notificationModel({
             user: uid,
@@ -102,21 +117,58 @@ const acceptRequest = async (req, res) => {
     }
 }
 
+
+const rescheduleRequest = async (req, res) => {
+    const { user, otherId, notificationId , time , channelName } = req.body;
+   
+    const user1 = await User.findById(user);
+    const user2 = await User.findById(otherId);
+    const meeting = await agoraModel.findOne({ channelName: channelName })
+
+    if (meeting) {
+        const notification1 = await new notificationModel({
+            user: user,
+            message: "Your meeting with " + user2.firstName + " " + user2.lastName + " has been rescheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
+        })
+    
+        const notification2 = await new notificationModel({
+            user: otherId,
+            message: "Your meeting with " + user1.firstName + " " + user1.lastName + " has been rescheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
+        })
+    
+        await notificationModel.findByIdAndDelete(notificationId);
+        await notification1.save();
+        await notification2.save();
+        return res.json({ status: 200 });
+    }
+
+else{
+
+    const notification1 = await new notificationModel({
+        user: user,
+        message: "Your meeting with " + user2.firstName + " " + user2.lastName + " has been rescheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
+    })
+
+    const notification2 = await new notificationModel({
+        user: otherId,
+        message: "Your meeting with " + user1.firstName + " " + user1.lastName + " has been rescheduled for " + time + ". link: https://acqify.co/#/call/" + channelName,
+    })
+
+    await notificationModel.findByIdAndDelete(notificationId);
+
+    await notification1.save();
+    await notification2.save();
+    return res.json({ status: 200 });
+}
+}
+
+
 const rejectRequest = async (req, res) => {
-    // const { userId, time } = req.body;
     const notificationId = req.body.notificationId;
     const buyerId = req.body.buyerId;
 
-    // console.log(userId);
-    // console.log(time);
-
     const userData = await User.findById(req.user.id);
-
-    // const notification = await new notificationModel({
-    //     user: userId,
-    //     message: userData.fName + " " + userData.lName + " is unavailable for the meeting you requested. The alternate propose time is: " + time + ".",
-    // });
-
+  
     await notificationModel.findByIdAndDelete(notificationId);
 
     const notification = await new notificationModel({
@@ -134,4 +186,4 @@ const getNotifications = async (req, res) => {
     res.json({ status: 200, notifications: notifications });
 }
 
-module.exports = { getMeetingDetails, getAllMeetingsForUser, createMeeting, scheduleRequest, acceptRequest, rejectRequest, getNotifications };
+module.exports = { getMeetingDetails, getAllMeetingsForUser, createMeeting, scheduleRequest, acceptRequest,rescheduleRequest, rejectRequest, getNotifications };
