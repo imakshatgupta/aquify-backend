@@ -21,31 +21,17 @@ const chatConnect = (server) => {
             clearTimeout(connection.deathTimer);
         });
 
-        const cookies = req.headers.cookie;
-        if (cookies) {
-            cookies.split("; ").find((cookie) => {
-                if (cookie.startsWith("token=")) {
-                    const token = cookie.split("=")[1];
-                    if (token) {
-                        jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
-                            if (err) throw err;
-                            connection.userId = decoded.id;
-                        });
-                    }
-                }
-            });
-        }
+       
 
         connection.on("message", async (message) => {
             const messageData = JSON.parse(message.toString());
-            const { reciever, messageString } = messageData;
-            if (reciever && messageString) {
+            const {sender , reciever, messageString } = messageData;
+            if (sender && reciever && messageString) {
                 const messageDoc = await Message.create({
                     reciever: reciever,
-                    sender: connection.userId,
+                    sender: sender,
                     message: messageString,
                 });
-                console.log('Running');
                 [...wss.clients].forEach((client) => {
                     if (client.userId == reciever) {
                         client.send(JSON.stringify(messageDoc));
