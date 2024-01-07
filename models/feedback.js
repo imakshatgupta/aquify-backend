@@ -6,6 +6,9 @@ const feedback = mongoose.Schema(
     },
     feed:{
       type:String,
+    },
+    pic:{
+      type:String,
     }
  }
 );

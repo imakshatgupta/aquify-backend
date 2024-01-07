@@ -191,13 +191,10 @@ const payment = async (req, res) => {
 
 const feedback = async (req, res) => {
   try {
-
-    console.log(req.body)
-    console.log(req.body.feedback)
-
     const newFeed = new Feedback({
       username: req.body.username,
-      feed: req.body.feedback
+      feed: req.body.feedback,
+      pic: req.body.pic
     })
 
     await newFeed.save();
