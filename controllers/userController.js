@@ -197,6 +197,15 @@ const feedback = async (req, res) => {
   }
 }
 
+const getFeedback = async (req, res) => {
+  try {
+    const feedbacks = await Feedback.find({});
+    res.send(feedbacks);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 module.exports = {
   loginUser,
   registerUser,
@@ -206,4 +215,5 @@ module.exports = {
   checkUser,
   payment,
   feedback,
+  getFeedback
 };

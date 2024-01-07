@@ -36,7 +36,11 @@ const userSchema = mongoose.Schema(
     pic:{
       type:String,
       default:"https://res.cloudinary.com/dlnkiwqfa/image/upload/v1700890727/gdigsqfldk4vliwgzfhm.svg"
-    }
+    },
+    admin:{
+      type:Boolean,
+      default:false
+    },
  }
 );
 

@@ -7,7 +7,8 @@ const {
   getUser,
   checkUser,
   payment,
-  feedback
+  feedback,
+  getFeedback
 } = require("../controllers/userController.js");
 
 const {authMiddleware} = require("../middleware/authMiddleware.js")
@@ -21,5 +22,7 @@ router.route("/updatePassword").post(authMiddleware, updatePassword);
 router.route("/updateProfile").post(authMiddleware, updateProfile);
 router.route("/payment").post(payment);
 router.route("/feedback").post(feedback);
+router.route("/getFeedback").get(getFeedback);
+
 
 module.exports=router;

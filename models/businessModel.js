@@ -19,7 +19,6 @@ const businessSchema = new mongoose.Schema({
   category: String,
   businessName: {
     type: String,
-    unique: true,
   },
   startDate: String,
   location: String,
@@ -70,7 +69,10 @@ const businessSchema = new mongoose.Schema({
   carouselImage2: String,
   googleAnalytics: String,
   video: String,
-
+  approved: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = new mongoose.model("businessDatas", businessSchema);
