@@ -82,6 +82,17 @@ const getUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).select("-password -email -role -pic -about -admin");
+    res.status(200).send(users);
+  } catch (err) {
+    console.error("Error decoding token or fetching user: ", err);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+
 const checkUser = async (req, res) => {
   try {
     console.log(req.cookies);
@@ -215,5 +226,6 @@ module.exports = {
   checkUser,
   payment,
   feedback,
-  getFeedback
+  getFeedback,
+  getAllUsers,
 };

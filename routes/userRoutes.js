@@ -5,6 +5,7 @@ const {
   updatePassword,
   updateProfile,
   getUser,
+  getAllUsers,
   checkUser,
   payment,
   feedback,
@@ -18,6 +19,7 @@ router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);
 router.route("/getUser").get(getUser);
 router.route("/checkUser").get(checkUser);
+router.route("/getAllUsers").get(getAllUsers);
 router.route("/updatePassword").post(authMiddleware, updatePassword);
 router.route("/updateProfile").post(authMiddleware, updateProfile);
 router.route("/payment").post(payment);
