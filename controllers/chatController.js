@@ -5,6 +5,19 @@ const contactModel = require("../models/contactModel.js");
 const getChat = async (req, res) => {
     const { userId } = req.params;
     const ourUserId = req.user.id;
+
+    const messages = await Message.find({
+        $or: [
+            { sender: ourUserId, reciever: userId },
+            { sender: userId, reciever: ourUserId },
+        ],
+    }).sort({ createdAt: 1 });
+    res.json(messages);
+}
+
+const getAdminChat = async (req, res) => {
+    const { userId } = req.params;
+    const ourUserId = req.query.id;
     console.log(userId, ourUserId);
 
     const messages = await Message.find({
@@ -51,4 +64,4 @@ const getAllChats = async (req, res) => {
 }
 
 
-module.exports = { getChat, usersWithChat , getAllChats };
+module.exports = { getChat, usersWithChat , getAllChats, getAdminChat };

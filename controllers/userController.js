@@ -192,11 +192,15 @@ const payment = async (req, res) => {
 const feedback = async (req, res) => {
   try {
     const newFeed = new Feedback({
+      basicFeedback: req.body.basicFeedback,
+      moreDetails: req.body.moreDetails,
+      buildFeedback: req.body.buildFeedback,
+      otherFeedback: req.body.otherFeedback,
       username: req.body.username,
-      feed: req.body.feedback,
       pic: req.body.pic
     })
 
+    console.log(newFeed)
     await newFeed.save();
     res.send({ message: 'Feedback saved successfully!' })
 
