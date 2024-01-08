@@ -197,7 +197,8 @@ const feedback = async (req, res) => {
       buildFeedback: req.body.buildFeedback,
       otherFeedback: req.body.otherFeedback,
       username: req.body.username,
-      pic: req.body.pic
+      pic: req.body.pic,
+      listingName: req.body.listingName,
     })
 
     console.log(newFeed)

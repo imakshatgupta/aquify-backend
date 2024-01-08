@@ -18,7 +18,10 @@ const feedback = mongoose.Schema(
     },
     pic:{
       type:String,
-    }
+    },
+    listingName:{
+      type:String,
+    },
  }
 );
 
