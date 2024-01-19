@@ -4,7 +4,7 @@ const Feedback = require("../models/feedback.js");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const stripe = require("stripe")(
-  "sk_test_51O4hY9SAFIUZ4HpWObRqBcH8pMoyVPbcCLpOzNuMKw5Rw4Yv4GZqh8ylqqHrUEkKWPheK1UK04B7A4I3uL6kGorK00soCEj7xH"
+  "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"
 );
 
 const generateToken = (user) => {
@@ -170,15 +170,15 @@ const payment = async (req, res) => {
           price_data: {
             currency: "inr",
             product_data: {
-              name: "Aquify",
+              name: "Acqify",
             },
-            unit_amount: 20000,
+            unit_amount: 9900,
           },
           quantity: 1,
         },
       ],
-      success_url: process.env.FRONTEND_URL + `/aqify#/MainDashboard/Dashbaord`,
-      cancel_url: process.env.FRONTEND_URL + `/aqify#/MainDashboard/Dashbaord/error`,
+      success_url: process.env.FRONTEND_URL + `/#/MainDashboard/Dashbaord`,
+      cancel_url: process.env.FRONTEND_URL + `/#/MainDashboard/Dashbaord/error`,
     });
     res.json({ url: session.url });
   } catch (error) {
