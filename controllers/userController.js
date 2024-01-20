@@ -4,7 +4,7 @@ const Feedback = require("../models/feedback.js");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const stripe = require("stripe")(
-  "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"
+  process.env.STRIPE_SECRET_KEY
 );
 
 const generateToken = (user) => {
