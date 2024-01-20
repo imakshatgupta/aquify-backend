@@ -45,6 +45,7 @@ const scheduleRequest = async (req, res) => {
     const listing = req.body.listing;
     const buyerId = req.user.id;
     const userData = await User.findById(req.user.id);
+    const user2 = await User.findById(user);
 
     if (!userData) {
         return res.status(404).json({ message: "User not found" });
@@ -59,7 +60,13 @@ const scheduleRequest = async (req, res) => {
     });
 
     await newNotification.save();
-    res.status(200).json({ message: "Notification sent" });
+    res.status(200).json({
+        message: "Notification sent",
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        time: time,
+        email: user2.email,
+    });
 }
 
 const acceptRequest = async (req, res) => {
@@ -84,7 +91,15 @@ const acceptRequest = async (req, res) => {
 
         await notification1.save();
         await notification2.save();
-        return res.json({ meeting });
+        return res.json({ status: 200 ,
+            firstName1: user1.firstName,
+            lastName1: user1.lastName,
+            email1: user1.email,
+            firstName2: user2.firstName,
+            lastName2: user2.lastName,
+            email2: user2.email,
+            time: time,
+            channelName: channelName});
     }
     else {
         const newMeeting = await new agoraModel({
@@ -113,7 +128,15 @@ const acceptRequest = async (req, res) => {
         await notification1.save();
         await notification2.save();
 
-        res.json({ status: 200 });
+        return res.json({ status: 200 ,
+            firstName1: user1.firstName,
+            lastName1: user1.lastName,
+            email1: user1.email,
+            firstName2: user2.firstName,
+            lastName2: user2.lastName,
+            email2: user2.email,
+            time: time,
+            channelName: channelName});
     }
 }
 
@@ -139,7 +162,15 @@ const rescheduleRequest = async (req, res) => {
         await notificationModel.findByIdAndDelete(notificationId);
         await notification1.save();
         await notification2.save();
-        return res.json({ status: 200 });
+        return res.json({ status: 200 ,
+            firstName1: user1.firstName,
+            lastName1: user1.lastName,
+            email1: user1.email,
+            firstName2: user2.firstName,
+            lastName2: user2.lastName,
+            email2: user2.email,
+            time: time,
+            channelName: channelName});
     }
 
 else{
