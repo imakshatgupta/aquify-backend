@@ -69,6 +69,19 @@ const scheduleRequest = async (req, res) => {
     });
 }
 
+const chatScheduleRequest = async (req, res) => {
+    const user1 = await User.findById(req.body.user1);
+    const user2 = await User.findById(req.body.user2);
+
+    return res.json({ status: 200 ,
+        firstName1: user1.firstName,
+        lastName1: user1.lastName,
+        email1: user1.email,
+        firstName2: user2.firstName,
+        lastName2: user2.lastName,
+        email2: user2.email});
+}
+
 const acceptRequest = async (req, res) => {
     const { channelName, otherId, notificationId , time } = req.body;
     const uid = req.user.id;
@@ -217,4 +230,16 @@ const getNotifications = async (req, res) => {
     res.json({ status: 200, notifications: notifications });
 }
 
-module.exports = { getMeetingDetails, getAllMeetingsForUser, createMeeting, scheduleRequest, acceptRequest,rescheduleRequest, rejectRequest, getNotifications };
+const getNotificationsTrue = async (req, res) => {
+    try {
+      await notificationModel.updateMany({}, { $set: { read: true } });
+      const updatedNotifications = await notificationModel.find({});
+      res.json({ status: 200, notifications: updatedNotifications });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ status: 500, error: 'Internal Server Error' });
+    }
+  }
+  
+
+module.exports = { getMeetingDetails, getAllMeetingsForUser, createMeeting, scheduleRequest,chatScheduleRequest, acceptRequest,rescheduleRequest, rejectRequest, getNotifications , getNotificationsTrue };
