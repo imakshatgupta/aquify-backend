@@ -10,6 +10,10 @@ const messageSchema = new mongoose.Schema({
         ref: "userDatas",
     },
     message: String,
+    read: {
+        type: Boolean,
+        default: false,
+    },
 }, {
     timestamps: true,
 });
